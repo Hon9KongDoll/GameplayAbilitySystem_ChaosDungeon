@@ -16,6 +16,11 @@ public:
 	AChaosDungeonCharacterBase();
 	
 protected:
+	// 右手武器
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	TObjectPtr<UStaticMeshComponent> Weapon;
+	TObjectPtr<UStaticMeshComponent> RightHandedWeapon;
+
+	// 左手武器
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UStaticMeshComponent> LeftHandedWeapon;
 };

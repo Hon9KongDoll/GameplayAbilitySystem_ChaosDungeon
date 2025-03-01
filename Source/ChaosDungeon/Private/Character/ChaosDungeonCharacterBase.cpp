@@ -8,7 +8,11 @@ AChaosDungeonCharacterBase::AChaosDungeonCharacterBase()
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
-	Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon"));
-	Weapon->SetupAttachment(GetMesh(), FName(TEXT("Weapon_R")));
-	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandedWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightHandedWeapon"));
+	RightHandedWeapon->SetupAttachment(GetMesh(), FName(TEXT("Weapon_R")));
+	RightHandedWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	LeftHandedWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LeftHandedWeapon"));
+	LeftHandedWeapon->SetupAttachment(GetMesh(), FName(TEXT("Weapon_L")));
+	LeftHandedWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
