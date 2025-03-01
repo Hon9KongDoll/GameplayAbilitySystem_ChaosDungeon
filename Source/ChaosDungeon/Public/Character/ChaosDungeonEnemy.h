@@ -8,5 +8,4 @@ UCLASS()
 class CHAOSDUNGEON_API AChaosDungeonEnemy : public AChaosDungeonCharacterBase
 {
 	GENERATED_BODY()
-	
 };
