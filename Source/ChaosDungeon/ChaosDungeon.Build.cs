@@ -15,7 +15,9 @@ public class ChaosDungeon : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"AIModule"
+			"GameplayTags",
+			"GameplayAbilities",
+			"GameplayTasks"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
