@@ -15,4 +15,7 @@ public:
 	
 	virtual void HightLightActor() override;
 	virtual void UnHightLightActor() override;
+
+protected:
+	virtual void BeginPlay() override;
 };

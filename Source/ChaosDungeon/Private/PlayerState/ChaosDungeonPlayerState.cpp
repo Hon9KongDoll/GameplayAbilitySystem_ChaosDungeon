@@ -9,6 +9,7 @@ AChaosDungeonPlayerState::AChaosDungeonPlayerState()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UDoCAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	
 	AttributeSet = CreateDefaultSubobject<UChaosDungeonAttributeSet>(TEXT("AttributeSet"));
 }

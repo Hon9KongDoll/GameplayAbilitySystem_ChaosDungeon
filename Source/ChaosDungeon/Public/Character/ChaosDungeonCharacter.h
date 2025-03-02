@@ -2,25 +2,27 @@
 
 #include "CoreMinimal.h"
 #include "Character/ChaosDungeonCharacterBase.h"
-#include "AbilitySystemInterface.h"
 #include "ChaosDungeonCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class CHAOSDUNGEON_API AChaosDungeonCharacter : public AChaosDungeonCharacterBase, public IAbilitySystemInterface
+class CHAOSDUNGEON_API AChaosDungeonCharacter : public AChaosDungeonCharacterBase
 {
 	GENERATED_BODY()
 
 public:
 	AChaosDungeonCharacter();
 
+	virtual void PossessedBy(AController* NewController) override;
+
+	virtual void OnRep_PlayerState() override;
+	
 	USpringArmComponent* GetCameraBoom() { return CameraBoom; }
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
-
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+private:
+	void InitAbilityActorInfo();
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

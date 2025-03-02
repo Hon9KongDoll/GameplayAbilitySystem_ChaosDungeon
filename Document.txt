@@ -1,3 +1,29 @@
 ChaosDungeonCharacterBase
     ChaosDungeonCharacter
     ChaosDungeonEnemy
+    
+    
+GameplayAbility
+    Init Ability Actor Info
+        Must be done after possession (the controller has been set for the Pawn) - 必须在占有后完成（已经为Pawn设置控制器） 
+        
+        Player - Controller Character
+            1. ASC Lives on the Pawn :
+                Server : PossessedBy
+                Client : AcknowledgePossession
+            2. ASC Lives on the PlayerState
+                Server : PossessedBy
+                 Client : OnRep_PlayerState
+        AI - Controller Character
+            Server : BeginPlay
+            Client : BeginPlay
+            
+    Mixed Replication Mode
+        For Mixed Replication Mode : The OwnerActor's Owner must be the Controller. For Pawns, this is set automatically in PossessedBy().
+        The PlayerState's Owner is automatically set to the Controller
+        Therefore, if your OwnerActor is not the PlayerState, and you user Mixed Replication Mode,
+        you must call SetOwner() on the OwnerActor to set its owner to the Controller.
+        对于混合复制模式 : OwnerActor 的 Owner 必须是 Controller。对于 Pawn，在PossessedBy()中自动设置的。
+        PlayerState 的 Owner 被自动设置为 Controller
+        因此，如果你的 OwnerActor 不是 PlayerState，而你使用混合复制模式，
+        你必须在 OwnerActor 上调用 SetOwner() 来将其所有者设置为 Controller。

@@ -1,6 +1,8 @@
 #include "Character/ChaosDungeonCharacter.h"
+#include "PlayerState/ChaosDungeonPlayerState.h"
 
 // Engine
+#include "AbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -41,4 +43,30 @@ AChaosDungeonCharacter::AChaosDungeonCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 	//FollowCamera->FieldOfView = 90.f;
 	FollowCamera->SetupAttachment(CameraBoom);
+}
+
+void AChaosDungeonCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// Init ability actor info for the server
+	InitAbilityActorInfo();
+}
+
+void AChaosDungeonCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	// Init ability actor info for the client
+	InitAbilityActorInfo();
+}
+
+void AChaosDungeonCharacter::InitAbilityActorInfo()
+{
+	AChaosDungeonPlayerState* ChaosDungeonPlayerState = Cast<AChaosDungeonPlayerState>(GetPlayerState());
+	check(ChaosDungeonPlayerState);
+	ChaosDungeonPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ChaosDungeonPlayerState, this);
+
+	AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
+	AttributeSet = ChaosDungeonPlayerState->GetAttributeSet();
 }

@@ -8,6 +8,7 @@ AChaosDungeonEnemy::AChaosDungeonEnemy()
 	
 	AbilitySystemComponent = CreateDefaultSubobject<UDoCAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
 	AttributeSet = CreateDefaultSubobject<UChaosDungeonAttributeSet>(TEXT("AttributeSet"));
 }
@@ -21,4 +22,12 @@ void AChaosDungeonEnemy::HightLightActor()
 void AChaosDungeonEnemy::UnHightLightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
+}
+
+void AChaosDungeonEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
