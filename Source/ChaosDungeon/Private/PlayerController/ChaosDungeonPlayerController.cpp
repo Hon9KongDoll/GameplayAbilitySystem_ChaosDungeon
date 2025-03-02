@@ -1,80 +1,144 @@
 #include "PlayerController/ChaosDungeonPlayerController.h"
+#include "Character/ChaosDungeonCharacter.h"
 
 // Engine
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AChaosDungeonPlayerController::AChaosDungeonPlayerController()
 {
 	bReplicates = true;
-	
-	PressDuration = 0.f;
-	PressDurationThreshold = 0.f;
-	CachedDestinationLocation = FVector::ZeroVector;
+
+	bLeftMouseDown = false;
+	bRightMouseDown = false;
 }
 
 void AChaosDungeonPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(ChaosDungeonInputMappingContext);
-	
-	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Default;
+	SetControlRotation(FRotator(-45.f, 0.f, 0.f));
 
+	bShowMouseCursor = true;
 	FInputModeGameAndUI InputModeData;
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
+	
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(ChaosDungeonInputMappingContext, 0);
+	}
 }
 
 void AChaosDungeonPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(ChaosDungeonInputMappingContext, 0);
-	}
-	
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		EnhancedInputComponent->BindAction(DestinationClickAction, ETriggerEvent::Started, this, &ThisClass::OnDestinationStarted);
-		EnhancedInputComponent->BindAction(DestinationClickAction, ETriggerEvent::Triggered, this, &ThisClass::OnDestinationTriggered);
-		EnhancedInputComponent->BindAction(DestinationClickAction, ETriggerEvent::Canceled, this, &ThisClass::OnDestinationReleased);
-		EnhancedInputComponent->BindAction(DestinationClickAction, ETriggerEvent::Completed, this, &ThisClass::OnDestinationReleased);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+		EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ThisClass::Turn);
+		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ThisClass::Zoom);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
+
+		EnhancedInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Started, this, &ThisClass::OnLeftMousePressed);
+		EnhancedInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Completed, this, &ThisClass::OnLeftMouseReleased);
+
+		EnhancedInputComponent->BindAction(MouseRightAction, ETriggerEvent::Started, this, &ThisClass::OnRightMousePressed);
+		EnhancedInputComponent->BindAction(MouseRightAction, ETriggerEvent::Completed, this, &ThisClass::OnRightMouseReleased);
 	}
 }
 
-void AChaosDungeonPlayerController::OnDestinationStarted()
+void AChaosDungeonPlayerController::Move(const FInputActionValue& Value)
 {
-	StopMovement();
-}
-
-void AChaosDungeonPlayerController::OnDestinationTriggered()
-{
-	PressDuration += GetWorld()->GetDeltaSeconds();
-
-	FHitResult HitResult;
-	if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult))
+	if (APawn* ControllerPawn = GetPawn<APawn>())
 	{
-		CachedDestinationLocation = HitResult.Location;
+		ControllerPawn->bUseControllerRotationYaw = false;
 	}
 	
-	if (APawn* ControlledPawn = GetPawn())
+	FVector2D InputVector = Value.Get<FVector2D>();
+	if (APawn* ControllerPawn = GetPawn<APawn>())
 	{
-		FVector WorldDirection = (CachedDestinationLocation - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		// 向前方向
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation = FRotator(0.0f, Rotation.Yaw, 0.0f);
+
+		// 旋转矩阵
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		ControllerPawn->AddMovementInput(ForwardDirection, InputVector.Y);
+		ControllerPawn->AddMovementInput(RightDirection, InputVector.X);
 	}
 }
 
-void AChaosDungeonPlayerController::OnDestinationReleased()
+void AChaosDungeonPlayerController::Turn(const FInputActionValue& Value)
 {
-	if (PressDuration <= PressDurationThreshold)
+	if (bLeftMouseDown || bRightMouseDown)
 	{
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestinationLocation);
-	}
+		FVector2D InputVector = Value.Get<FVector2D>();
+		AddYawInput(InputVector.X);
+		AddPitchInput(-InputVector.Y);
 
-	PressDuration = 0.f;
+		if (APawn* ControllerPawn = GetPawn<APawn>())
+		{
+			if (bRightMouseDown && ControllerPawn->GetVelocity().Size() == 0.f)
+			{
+				ControllerPawn->bUseControllerRotationYaw = true;
+			}
+		}
+	}
+}
+
+void AChaosDungeonPlayerController::Zoom(const FInputActionValue& Value)
+{
+	float ZoomValue = Value.Get<float>();
+
+	if (AChaosDungeonCharacter* ChaosDungeonCharacter = GetPawn<AChaosDungeonCharacter>())
+	{
+		USpringArmComponent* CameraBoom = ChaosDungeonCharacter->GetCameraBoom();
+		CameraBoom->TargetArmLength = FMath::Clamp(CameraBoom->TargetArmLength + (ZoomValue * -50.0f), 300.0f, 1200.0f);
+	}
+}
+
+void AChaosDungeonPlayerController::Jump()
+{
+	if (AChaosDungeonCharacter* ChaosDungeonCharacter = GetPawn<AChaosDungeonCharacter>())
+	{
+		if (ChaosDungeonCharacter->GetCharacterMovement()->IsMovingOnGround())
+		{
+			FVector ForwardVelocity = ChaosDungeonCharacter->GetVelocity();
+			ForwardVelocity.Z = 0.f;
+			float JumpVerticalVelocity = ChaosDungeonCharacter->GetCharacterMovement()->JumpZVelocity;
+			FVector JumpVelocity = ForwardVelocity + FVector(0.f, 0.f, JumpVerticalVelocity);
+			ChaosDungeonCharacter->LaunchCharacter(JumpVelocity, true, true);
+		}
+	}
+}
+
+void AChaosDungeonPlayerController::OnLeftMousePressed()
+{
+	bLeftMouseDown = true;
+}
+
+void AChaosDungeonPlayerController::OnLeftMouseReleased()
+{
+	bLeftMouseDown = false;
+}
+
+void AChaosDungeonPlayerController::OnRightMousePressed()
+{
+	bRightMouseDown = true;
+}
+
+void AChaosDungeonPlayerController::OnRightMouseReleased()
+{
+	bRightMouseDown = false;
+	if (APawn* ControllerPawn = GetPawn<APawn>())
+	{
+		ControllerPawn->bUseControllerRotationYaw = false;
+	}
 }

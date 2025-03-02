@@ -15,6 +15,8 @@ class CHAOSDUNGEON_API AChaosDungeonCharacter : public AChaosDungeonCharacterBas
 public:
 	AChaosDungeonCharacter();
 
+	USpringArmComponent* GetCameraBoom() { return CameraBoom; }
+	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> CameraBoom;
