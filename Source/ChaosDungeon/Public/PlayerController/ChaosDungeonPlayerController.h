@@ -6,6 +6,7 @@
 
 class UInputMappingContext;
 class UInputAction;
+class IEnemyInterface;
 struct FInputActionValue;
 
 UCLASS()
@@ -16,6 +17,8 @@ class CHAOSDUNGEON_API AChaosDungeonPlayerController : public APlayerController
 public:
 	AChaosDungeonPlayerController();
 
+	virtual void PlayerTick(float DeltaTime) override;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -31,6 +34,8 @@ private:
 	
 	void OnRightMousePressed();
 	void OnRightMouseReleased();
+
+	void CursorTrace();
 	
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
@@ -56,4 +61,7 @@ private:
 
 	uint32 bLeftMouseDown:1;
 	uint32 bRightMouseDown:1;
+
+	TObjectPtr<IEnemyInterface> LastActor;
+	TObjectPtr<IEnemyInterface> ThisActor;
 };

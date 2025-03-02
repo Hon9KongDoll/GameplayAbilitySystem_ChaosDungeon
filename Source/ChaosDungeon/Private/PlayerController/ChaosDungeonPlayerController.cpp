@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Interaction/EnemyInterface.h"
 
 AChaosDungeonPlayerController::AChaosDungeonPlayerController()
 {
@@ -13,6 +14,13 @@ AChaosDungeonPlayerController::AChaosDungeonPlayerController()
 
 	bLeftMouseDown = false;
 	bRightMouseDown = false;
+}
+
+void AChaosDungeonPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
 }
 
 void AChaosDungeonPlayerController::BeginPlay()
@@ -140,5 +148,40 @@ void AChaosDungeonPlayerController::OnRightMouseReleased()
 	if (APawn* ControllerPawn = GetPawn<APawn>())
 	{
 		ControllerPawn->bUseControllerRotationYaw = false;
+	}
+}
+
+void AChaosDungeonPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+
+	LastActor = ThisActor;
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	if (LastActor == nullptr)
+	{
+		if (ThisActor == nullptr){}
+		else
+		{
+			ThisActor->HightLightActor();
+		}
+	}
+	else
+	{
+		if (ThisActor == nullptr)
+		{
+			LastActor->UnHightLightActor();
+		}
+		else
+		{
+			if (LastActor == ThisActor){}
+			else
+			{
+				LastActor->UnHightLightActor();
+				ThisActor->HightLightActor();
+			}
+		}
 	}
 }
