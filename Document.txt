@@ -33,3 +33,7 @@ GameplayAbility
                   客户端不需要等待服务器的许可来更改值。
                   该值可以在客户端立即更改，并通知服务器更改。
                   服务器可以回滚无效的更改。
+                  
+UserInterface
+    ChaosDungeonUserWidget
+    ChaosDungeonWidgetController
