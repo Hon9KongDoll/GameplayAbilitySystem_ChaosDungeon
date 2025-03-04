@@ -1,5 +1,7 @@
 #include "Character/ChaosDungeonCharacter.h"
 #include "PlayerState/ChaosDungeonPlayerState.h"
+#include "PlayerController/ChaosDungeonPlayerController.h"
+#include "UserInterface/HUD/ChaosDungeonHUD.h"
 
 // Engine
 #include "AbilitySystemComponent.h"
@@ -69,4 +71,12 @@ void AChaosDungeonCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
 	AttributeSet = ChaosDungeonPlayerState->GetAttributeSet();
+
+	if (AChaosDungeonPlayerController* ChaosDungeonPlayerController = Cast<AChaosDungeonPlayerController>(GetController()))
+	{
+		if (AChaosDungeonHUD* ChaosDungeonHUD = Cast<AChaosDungeonHUD>(ChaosDungeonPlayerController->GetHUD()))
+		{
+			ChaosDungeonHUD->InitOverlay(ChaosDungeonPlayerController, ChaosDungeonPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
