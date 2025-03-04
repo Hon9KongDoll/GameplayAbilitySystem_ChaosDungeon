@@ -4,6 +4,8 @@
 #include "UserInterface/WidgetController/ChaosDungeonWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+struct FOnAttributeChangeData;
+
 // 声明动态组播委托
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
@@ -20,6 +22,14 @@ class CHAOSDUNGEON_API UOverlayWidgetController : public UChaosDungeonWidgetCont
 public:
 	virtual void BroadcastInitialValues() override;
 
+	virtual void BindCallbacksToDependencies() override;
+
+protected:
+	void HealthChanged(const FOnAttributeChangeData& Data) const;
+	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
+	void ManaChanged(const FOnAttributeChangeData& Data) const;
+	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
+	
 public:
 	// BlueprintAssignable : 允许属性在蓝图中被绑定到委托，使得该属性可以在蓝图中触发相应的函数或事件
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")

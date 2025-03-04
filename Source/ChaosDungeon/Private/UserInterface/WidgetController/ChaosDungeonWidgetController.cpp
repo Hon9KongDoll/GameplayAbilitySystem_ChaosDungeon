@@ -11,3 +11,7 @@ void UChaosDungeonWidgetController::SetWidgetControllerParams(const FWidgetContr
 void UChaosDungeonWidgetController::BroadcastInitialValues()
 {
 }
+
+void UChaosDungeonWidgetController::BindCallbacksToDependencies()
+{
+}

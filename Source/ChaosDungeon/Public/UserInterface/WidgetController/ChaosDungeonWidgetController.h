@@ -43,7 +43,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& InWidgetControllerParams);
 
+	// 广播初始值
 	virtual void BroadcastInitialValues();
+
+	// 将回调绑定到依赖项
+	virtual void BindCallbacksToDependencies();
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")

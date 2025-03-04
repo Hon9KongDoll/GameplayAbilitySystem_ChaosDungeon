@@ -13,6 +13,9 @@ UOverlayWidgetController* AChaosDungeonHUD::GetOverlayWidgetController(
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(InWidgetControllerParams);
 
+		// 绑定委托,监听 GameplayAttribute 属性值变化
+		OverlayWidgetController->BindCallbacksToDependencies();
+		
 		return OverlayWidgetController;
 	}
 	
