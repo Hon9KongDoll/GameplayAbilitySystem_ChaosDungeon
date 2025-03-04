@@ -32,5 +32,8 @@ void AChaosDungeonHUD::InitOverlay(APlayerController* InPlayerController, APlaye
 	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
 
 	OverlayWidget->SetWidgetController(WidgetController);
+
+	WidgetController->BroadcastInitialValues();
+	
 	OverlayWidget->AddToViewport();
 }

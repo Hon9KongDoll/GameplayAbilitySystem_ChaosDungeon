@@ -7,3 +7,7 @@ void UChaosDungeonWidgetController::SetWidgetControllerParams(const FWidgetContr
 	AbilitySystemComponent = InWidgetControllerParams.AbilitySystemComponent;
 	AttributeSet = InWidgetControllerParams.AttributeSet;
 }
+
+void UChaosDungeonWidgetController::BroadcastInitialValues()
+{
+}
