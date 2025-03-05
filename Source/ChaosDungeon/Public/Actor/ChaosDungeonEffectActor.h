@@ -4,8 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "ChaosDungeonEffectActor.generated.h"
 
-class USphereComponent;
-class UStaticMeshComponent;
+class UGameplayEffect;
 
 UCLASS()
 class CHAOSDUNGEON_API AChaosDungeonEffectActor : public AActor
@@ -17,25 +16,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex,
-		bool bFromSweep,
-		const FHitResult & SweepResult);
-
-	UFUNCTION()
-	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex);
-
-private:
-	UPROPERTY(VisibleAnywhere) 
-	TObjectPtr<USphereComponent> Sphere;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Mesh;
+protected:
+	// EditAnywhere : 用于标记 UCLASS USTRUCT UOBJECT 的成员变量，使其可以在编辑器的详情面板 DetailsPanel 中进行调整
+	// 即时游戏效果类
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+	
 };

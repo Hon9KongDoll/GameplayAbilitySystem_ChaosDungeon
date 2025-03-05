@@ -37,3 +37,15 @@ GameplayAbility
 UserInterface
     ChaosDungeonUserWidget
     ChaosDungeonWidgetController
+    
+    
+    
+    
+FGameplayEffectContextHandle:
+    AddInstigator(AActor* Instigator, AActor* EffectCauser) 设置施加者和造成效果的对象
+    GetInstigator() 获取施加者(通常是角色)
+    GetEffectCauser() 获取造成效果的对象(如武器、技能)
+    AddSourceObject(UObject* NewSourceObject) 设置来源对象(如武器、法杖等)
+    GetSourceObject() 获取来源对象
+    AddHitResult(const FHitResult& InHitResult) 添加命中的目标信息(通常用于射线检测)
+    GetHitResult() 获取命中目标的信息(如位置、法线、受击对象)

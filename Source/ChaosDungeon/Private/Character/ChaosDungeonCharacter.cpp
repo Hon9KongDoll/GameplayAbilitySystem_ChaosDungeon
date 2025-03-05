@@ -71,11 +71,12 @@ void AChaosDungeonCharacter::InitAbilityActorInfo()
 
 	AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
 	AttributeSet = ChaosDungeonPlayerState->GetAttributeSet();
-
+	
 	if (AChaosDungeonPlayerController* ChaosDungeonPlayerController = Cast<AChaosDungeonPlayerController>(GetController()))
 	{
 		if (AChaosDungeonHUD* ChaosDungeonHUD = Cast<AChaosDungeonHUD>(ChaosDungeonPlayerController->GetHUD()))
 		{
+			// 初始化 HUD
 			ChaosDungeonHUD->InitOverlay(ChaosDungeonPlayerController, ChaosDungeonPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}

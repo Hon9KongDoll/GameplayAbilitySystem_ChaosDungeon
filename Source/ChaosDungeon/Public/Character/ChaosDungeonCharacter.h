@@ -15,6 +15,7 @@ class CHAOSDUNGEON_API AChaosDungeonCharacter : public AChaosDungeonCharacterBas
 public:
 	AChaosDungeonCharacter();
 
+	// 在角色被服务器或 AI 控制时会调用
 	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void OnRep_PlayerState() override;

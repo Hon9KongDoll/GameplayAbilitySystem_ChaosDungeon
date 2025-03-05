@@ -1,46 +1,43 @@
 #include "Actor/ChaosDungeonEffectActor.h"
-#include "AbilitySystem/ChaosDungeonAttributeSet.h"
 
-// Engine
-#include "AbilitySystemInterface.h"
+//Engine
+#include "GameplayEffect.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "Components/SphereComponent.h"
-#include "Components/StaticMeshComponent.h"
 
 AChaosDungeonEffectActor::AChaosDungeonEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	SetRootComponent(Sphere);
-	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
+
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
 void AChaosDungeonEffectActor::BeginPlay()
-
 {
 	Super::BeginPlay();
-
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnEndOverlap);
 }
 
-void AChaosDungeonEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AChaosDungeonEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
-	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		const UChaosDungeonAttributeSet* ChaosDungeonAttributeSet = Cast<UChaosDungeonAttributeSet>(ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(UChaosDungeonAttributeSet::StaticClass()));
+	check(GameplayEffectClass);
+	
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if (AbilitySystemComponent == nullptr) return;
 
-		UChaosDungeonAttributeSet* MutableChaosDungeonAttributeSet = const_cast<UChaosDungeonAttributeSet*>(ChaosDungeonAttributeSet);
-		MutableChaosDungeonAttributeSet->SetHealth(MutableChaosDungeonAttributeSet->GetHealth() + 25.f);
-		Destroy();
-	}
-}
-
-void AChaosDungeonEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
+	// 作用是生成一个效果上下文，用来存储施加者(Instigator)、来源对象(SourceObject)、命中目标等附加信息，以便 GameplayEffect 处理时使用
+	FGameplayEffectContextHandle GameplayEffectContextHandle = AbilitySystemComponent->MakeEffectContext();
+	GameplayEffectContextHandle.AddSourceObject(this);
+	
+	// 实例化一个 UGameplayEffect，并为其提供必要的上下文信息(如等级、来源信息)，以便后续应用到自己或目标
+	// FGameplayEffectSpecHandle MakeOutgoingSpec(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level, FGameplayEffectContextHandle Context);
+	// GameplayEffectClass : 用于指定要应用的 GameplayEffect,通常是在编辑器中创建的 GameplayEffect 资产
+	// Level : 指定 GameplayEffect 的等级，可以用于影响数值计算
+	// Context : 传递额外的上下文信息(如伤害来源、命中目标等)
+	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 1.f, GameplayEffectContextHandle);
+	
+	// 允许 Actor(通常是角色) 对自己应用一个 GameplayEffect(游戏效果)，用于修改属性、应用状态效果、触发伤害
+	// FActiveGameplayEffectHandle ApplyGameplayEffectSpecToSelf (const FGameplayEffectSpec& GameplayEffectSpec, FPredictionKey PredictionKey = FPredictionKey());
+	// FGameplayEffectSpec : 是 UGameplayEffect 的实例化版本，包含持续时间、强度、目标属性等数据
+	// PredictionKey : 主要用于网络预测同步, 对于客户端预测的 Gameplay Effect，可以用于防止延迟同步问题
+	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
 }
