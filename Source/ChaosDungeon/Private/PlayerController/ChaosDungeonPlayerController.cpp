@@ -116,14 +116,7 @@ void AChaosDungeonPlayerController::Jump()
 {
 	if (AChaosDungeonCharacter* ChaosDungeonCharacter = GetPawn<AChaosDungeonCharacter>())
 	{
-		if (ChaosDungeonCharacter->GetCharacterMovement()->IsMovingOnGround())
-		{
-			FVector ForwardVelocity = ChaosDungeonCharacter->GetVelocity();
-			ForwardVelocity.Z = 0.f;
-			float JumpVerticalVelocity = ChaosDungeonCharacter->GetCharacterMovement()->JumpZVelocity;
-			FVector JumpVelocity = ForwardVelocity + FVector(0.f, 0.f, JumpVerticalVelocity);
-			ChaosDungeonCharacter->LaunchCharacter(JumpVelocity, true, true);
-		}
+		ChaosDungeonCharacter->Jump();
 	}
 }
 
