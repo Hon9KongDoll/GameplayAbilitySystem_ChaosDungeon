@@ -93,7 +93,7 @@ void AChaosDungeonEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclas
 	// GameplayEffectClass : 用于指定要应用的 GameplayEffect,通常是在编辑器中创建的 GameplayEffect 资产
 	// Level : 指定 GameplayEffect 的等级，可以用于影响数值计算
 	// Context : 传递额外的上下文信息(如伤害来源、命中目标等)
-	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 1.f, GameplayEffectContextHandle);
+	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, GameplayEffectContextHandle);
 
 	// 允许 Actor(通常是角色) 对自己应用一个 GameplayEffect(游戏效果)，用于修改属性、应用状态效果、触发伤害
 	// FActiveGameplayEffectHandle ApplyGameplayEffectSpecToSelf (const FGameplayEffectSpec& GameplayEffectSpec, FPredictionKey PredictionKey = FPredictionKey());
