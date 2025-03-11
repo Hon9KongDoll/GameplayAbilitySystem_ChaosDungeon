@@ -16,3 +16,7 @@ AChaosDungeonCharacterBase::AChaosDungeonCharacterBase()
 	LeftHandedWeapon->SetupAttachment(GetMesh(), FName(TEXT("Weapon_L")));
 	LeftHandedWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
+
+void AChaosDungeonCharacterBase::InitAbilityActorInfo()
+{
+}

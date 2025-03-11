@@ -2,6 +2,7 @@
 #include "PlayerState/ChaosDungeonPlayerState.h"
 #include "PlayerController/ChaosDungeonPlayerController.h"
 #include "UserInterface/HUD/ChaosDungeonHUD.h"
+#include "AbilitySystem/DoCAbilitySystemComponent.h"
 
 // Engine
 #include "AbilitySystemComponent.h"
@@ -68,6 +69,7 @@ void AChaosDungeonCharacter::InitAbilityActorInfo()
 	AChaosDungeonPlayerState* ChaosDungeonPlayerState = Cast<AChaosDungeonPlayerState>(GetPlayerState());
 	check(ChaosDungeonPlayerState);
 	ChaosDungeonPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ChaosDungeonPlayerState, this);
+	Cast<UDoCAbilitySystemComponent>(ChaosDungeonPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 
 	AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
 	AttributeSet = ChaosDungeonPlayerState->GetAttributeSet();

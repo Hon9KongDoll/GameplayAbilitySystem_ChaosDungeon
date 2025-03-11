@@ -23,7 +23,7 @@ public:
 	USpringArmComponent* GetCameraBoom() { return CameraBoom; }
 
 private:
-	void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

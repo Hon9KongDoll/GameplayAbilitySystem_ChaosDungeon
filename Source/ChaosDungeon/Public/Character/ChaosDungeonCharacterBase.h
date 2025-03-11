@@ -22,6 +22,9 @@ public:
 
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
+private:
+	virtual void InitAbilityActorInfo();
+
 protected:
 	// 右手武器
 	UPROPERTY(EditAnywhere, Category = "Combat")

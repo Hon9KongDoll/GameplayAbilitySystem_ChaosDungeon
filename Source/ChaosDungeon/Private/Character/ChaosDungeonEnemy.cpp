@@ -29,5 +29,12 @@ void AChaosDungeonEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	check(AbilitySystemComponent);
+
+	InitAbilityActorInfo();
+}
+
+void AChaosDungeonEnemy::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
