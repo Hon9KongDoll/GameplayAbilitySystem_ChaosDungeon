@@ -33,9 +33,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ChaosDungeonAttributeSet->GetMaxManaAttribute()).AddUObject(this, &ThisClass::MaxManaChanged);
 	
 	Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[](const FGameplayTagContainer& GameplayTagContainer)
+		[this](const FGameplayTagContainer& GameplayTagContainer)
 		{
-
+			for (const FGameplayTag& Tag : GameplayTagContainer)
+			{
+				FUIWidgetRow* Row = GetDataTableByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+			}
 		}
 	);
 }

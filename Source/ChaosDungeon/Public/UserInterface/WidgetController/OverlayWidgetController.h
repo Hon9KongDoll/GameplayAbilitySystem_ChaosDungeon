@@ -51,6 +51,9 @@ protected:
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 	
+	template<typename T>
+	T* GetDataTableByTag(UDataTable* DataTable, const FGameplayTag& GameplayTag);
+
 public:
 	// BlueprintAssignable : 允许属性在蓝图中被绑定到委托，使得该属性可以在蓝图中触发相应的函数或事件
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
@@ -69,3 +72,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 };
+
+template<typename T>
+inline T* UOverlayWidgetController::GetDataTableByTag(UDataTable* DataTable, const FGameplayTag& GameplayTag)
+{
+	return DataTable->FindRow<T>(GameplayTag.GetTagName(), TEXT(""));
+}
