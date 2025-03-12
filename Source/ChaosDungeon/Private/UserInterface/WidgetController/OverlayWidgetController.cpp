@@ -32,15 +32,24 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ChaosDungeonAttributeSet->GetManaAttribute()).AddUObject(this, &ThisClass::ManaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ChaosDungeonAttributeSet->GetMaxManaAttribute()).AddUObject(this, &ThisClass::MaxManaChanged);
 	
-	Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this](const FGameplayTagContainer& GameplayTagContainer)
-		{
-			for (const FGameplayTag& Tag : GameplayTagContainer)
+	UDoCAbilitySystemComponent* DocASC = Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent);
+	if (DocASC)
+	{
+		Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+			[this](const FGameplayTagContainer& GameplayTagContainer)
 			{
-				FUIWidgetRow* Row = GetDataTableByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				for (const FGameplayTag& Tag : GameplayTagContainer)
+				{
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+					if (Tag.MatchesTag(MessageTag))
+					{
+						FUIWidgetRow* Row = GetDataTableByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
+				}
 			}
-		}
-	);
+		);
+	}
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
