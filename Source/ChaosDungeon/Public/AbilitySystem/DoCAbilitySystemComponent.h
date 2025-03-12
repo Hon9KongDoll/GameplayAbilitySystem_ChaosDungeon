@@ -4,6 +4,8 @@
 #include "AbilitySystemComponent.h"
 #include "DoCAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
+
 UCLASS()
 class CHAOSDUNGEON_API UDoCAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -16,4 +18,7 @@ protected:
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
 		const FGameplayEffectSpec& GameplayEffectSpec,
 		FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
+
+public:
+	FEffectAssetTags EffectAssetTags;
 };

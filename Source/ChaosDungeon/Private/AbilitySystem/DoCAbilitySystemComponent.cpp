@@ -11,4 +11,6 @@ void UDoCAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilityS
 {
 	FGameplayTagContainer GameplayTagContainer;
 	GameplayEffectSpec.GetAllAssetTags(GameplayTagContainer);
+
+	EffectAssetTags.Broadcast(GameplayTagContainer);
 }

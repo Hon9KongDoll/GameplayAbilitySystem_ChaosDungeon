@@ -1,5 +1,6 @@
 #include "UserInterface/WidgetController/OverlayWidgetController.h"
 #include "AbilitySystem/ChaosDungeonAttributeSet.h"
+#include "AbilitySystem/DoCAbilitySystemComponent.h"
 
 // Engine
 #include "GameplayEffectTypes.h"
@@ -31,6 +32,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ChaosDungeonAttributeSet->GetManaAttribute()).AddUObject(this, &ThisClass::ManaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ChaosDungeonAttributeSet->GetMaxManaAttribute()).AddUObject(this, &ThisClass::MaxManaChanged);
 	
+	Cast<UDoCAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+		[](const FGameplayTagContainer& GameplayTagContainer)
+		{
+
+		}
+	);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
