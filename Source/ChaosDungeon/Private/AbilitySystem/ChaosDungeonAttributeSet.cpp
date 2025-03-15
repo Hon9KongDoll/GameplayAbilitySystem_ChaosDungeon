@@ -23,6 +23,12 @@ void UChaosDungeonAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetim
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Attack, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, PhysicalDEF, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, LegalDEF, COND_None, REPNOTIFY_Always);
 }
 
 void UChaosDungeonAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -56,6 +62,31 @@ void UChaosDungeonAttributeSet::PostGameplayEffectExecute(const FGameplayEffectM
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
+}
+
+void UChaosDungeonAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Stamina, OldStamina);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Attack(const FGameplayAttributeData& OldAttack) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Attack, OldAttack);
+}
+
+void UChaosDungeonAttributeSet::OnRep_PhysicalDEF(const FGameplayAttributeData& OldPhysicalDEF) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, PhysicalDEF, OldPhysicalDEF);
+}
+
+void UChaosDungeonAttributeSet::OnRep_LegalDEF(const FGameplayAttributeData& OldLegalDEF) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, LegalDEF, OldLegalDEF);
 }
 
 void UChaosDungeonAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const

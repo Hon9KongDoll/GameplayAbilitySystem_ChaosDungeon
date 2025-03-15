@@ -66,9 +66,14 @@ void AChaosDungeonCharacter::OnRep_PlayerState()
 
 void AChaosDungeonCharacter::InitAbilityActorInfo()
 {
+	// 获取玩家状态
 	AChaosDungeonPlayerState* ChaosDungeonPlayerState = Cast<AChaosDungeonPlayerState>(GetPlayerState());
 	check(ChaosDungeonPlayerState);
+
+	// 玩家状态类继承 IAbilitySystemInterface,实现 GetAbilitySystemComponent() 纯虚函数
+	// 初始化 InitAbilityActorInfo：OwnerActor - 玩家状态，AvatarActor - 角色
 	ChaosDungeonPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ChaosDungeonPlayerState, this);
+
 	Cast<UDoCAbilitySystemComponent>(ChaosDungeonPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 
 	AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
@@ -82,4 +87,6 @@ void AChaosDungeonCharacter::InitAbilityActorInfo()
 			ChaosDungeonHUD->InitOverlay(ChaosDungeonPlayerController, ChaosDungeonPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+
+	InitializeBasicAttributes();
 }

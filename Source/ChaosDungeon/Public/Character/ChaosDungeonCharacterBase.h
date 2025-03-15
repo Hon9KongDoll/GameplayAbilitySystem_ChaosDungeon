@@ -8,6 +8,7 @@
 class UStaticMeshComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayEffect;
 
 // Abstract宏 : 无法进行实例化，可能包含需要在子类中实现的纯虚函数
 UCLASS(Abstract)
@@ -22,6 +23,9 @@ public:
 
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
+protected:
+	void InitializeBasicAttributes() const;
+
 private:
 	virtual void InitAbilityActorInfo();
 
@@ -39,4 +43,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	// 用于初始化基础属性
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultBasicAttributes;
 };
