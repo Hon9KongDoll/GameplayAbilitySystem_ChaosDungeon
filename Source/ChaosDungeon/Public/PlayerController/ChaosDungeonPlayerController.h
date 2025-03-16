@@ -62,6 +62,8 @@ private:
 	uint32 bLeftMouseDown:1;
 	uint32 bRightMouseDown:1;
 
-	TObjectPtr<IEnemyInterface> LastActor;
-	TObjectPtr<IEnemyInterface> ThisActor;
+	IEnemyInterface* LastActor;
+	IEnemyInterface* ThisActor;
+	//TObjectPtr<IEnemyInterface> LastActor;
+	//TObjectPtr<IEnemyInterface> ThisActor;
 };

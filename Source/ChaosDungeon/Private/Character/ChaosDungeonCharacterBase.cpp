@@ -1,4 +1,5 @@
 #include "Character/ChaosDungeonCharacterBase.h"
+#include "AbilitySystem/DoCAbilitySystemComponent.h"
 
 // Engine
 #include "Components/StaticMeshComponent.h"
@@ -27,6 +28,18 @@ void AChaosDungeonCharacterBase::InitializeBasicAttributes() const
 	FGameplayEffectContextHandle GameplayEffectContextHandle = AbilitySystemComponent->MakeEffectContext();
 	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultBasicAttributes, 1.0, GameplayEffectContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*GameplayEffectSpecHandle.Data.Get(), AbilitySystemComponent);
+}
+
+void AChaosDungeonCharacterBase::AddCharacterAbilities()
+{
+	if (!HasAuthority()) return;
+
+	UDoCAbilitySystemComponent* DoCAbilitySystemComponent = Cast<UDoCAbilitySystemComponent>(GetAbilitySystemComponent());
+
+	if (DoCAbilitySystemComponent)
+	{
+		DoCAbilitySystemComponent->AddCharacterAbilities(StartupAbilities);
+	}
 }
 
 void AChaosDungeonCharacterBase::InitAbilityActorInfo()

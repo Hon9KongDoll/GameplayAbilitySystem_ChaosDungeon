@@ -54,6 +54,8 @@ void AChaosDungeonCharacter::PossessedBy(AController* NewController)
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
+
+	AddCharacterAbilities();
 }
 
 void AChaosDungeonCharacter::OnRep_PlayerState()
