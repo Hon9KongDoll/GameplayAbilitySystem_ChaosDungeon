@@ -7,6 +7,7 @@
 
 class UChaosDungeonUserWidget;
 class UOverlayWidgetController;
+class UAttributeMenuWidgetController;
 
 UCLASS()
 class CHAOSDUNGEON_API AChaosDungeonHUD : public AHUD
@@ -16,16 +17,17 @@ class CHAOSDUNGEON_API AChaosDungeonHUD : public AHUD
 public:
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& InWidgetControllerParams);
 
+	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& InWidgetControllerParams);
+
 	void InitOverlay(APlayerController* InPlayerController,
 		APlayerState* InPlayerState,
 		UAbilitySystemComponent* InAbilitySystemComponent,
 		UAttributeSet* InAttributeSet);
 
-public:
+private:
 	UPROPERTY()
 	TObjectPtr<UChaosDungeonUserWidget> OverlayWidget;
 
-private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UChaosDungeonUserWidget> OverlayWidgetClass;
 
@@ -34,4 +36,10 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
 };

@@ -28,3 +28,25 @@ UOverlayWidgetController* UChaosDungeonAbilitySystemLibrary::GetOverlayWidgetCon
 
 	return nullptr;
 }
+
+UAttributeMenuWidgetController* UChaosDungeonAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0);
+
+	if (PlayerController)
+	{
+		if (AChaosDungeonHUD* ChaosDungeonHUD = Cast<AChaosDungeonHUD>(PlayerController->GetHUD()))
+		{
+			if (AChaosDungeonPlayerState* ChaosDungeonPlayerState = PlayerController->GetPlayerState<AChaosDungeonPlayerState>())
+			{
+				UAbilitySystemComponent* AbilitySystemComponent = ChaosDungeonPlayerState->GetAbilitySystemComponent();
+				UAttributeSet* AttributeSet = ChaosDungeonPlayerState->GetAttributeSet();
+
+				const FWidgetControllerParams WidgetControllerParams(PlayerController, ChaosDungeonPlayerState, AbilitySystemComponent, AttributeSet);
+				return ChaosDungeonHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
+			}
+		}
+	}
+
+	return nullptr;
+}

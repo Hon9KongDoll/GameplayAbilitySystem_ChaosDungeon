@@ -1,4 +1,5 @@
 #include "AbilitySystem/ChaosDungeonAttributeSet.h"
+#include "ChaosDungeonGameplayTags.h"
 
 // Engine
 #include "Net/UnrealNetwork.h"
@@ -8,10 +9,11 @@
 
 UChaosDungeonAttributeSet::UChaosDungeonAttributeSet()
 {
-	InitHealth(50.f);
-	InitMaxHealth(100.f);
-	InitMana(50.f);
-	InitMaxMana(100.f);
+	const FChaosDungeonGameplayTags& GameplayTags = FChaosDungeonGameplayTags::Get();
+
+	FAttributeSignature IntelligenceDelegate;
+	IntelligenceDelegate.BindStatic(GetIntelligenceAttribute);
+	TagToAttributes.Add(GameplayTags.Attributes_BasicAttributes_Intelligence, IntelligenceDelegate);
 }
 
 void UChaosDungeonAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

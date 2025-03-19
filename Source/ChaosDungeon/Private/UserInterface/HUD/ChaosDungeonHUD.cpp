@@ -1,6 +1,7 @@
 #include "UserInterface/HUD/ChaosDungeonHUD.h"
 #include "UserInterface/Widgets/ChaosDungeonUserWidget.h"
 #include "UserInterface/WidgetController/OverlayWidgetController.h"
+#include "UserInterface/WidgetController/AttributeMenuWidgetController.h"
 
 // Engine
 #include "Blueprint/UserWidget.h"
@@ -20,6 +21,22 @@ UOverlayWidgetController* AChaosDungeonHUD::GetOverlayWidgetController(
 	}
 	
 	return OverlayWidgetController;
+}
+
+UAttributeMenuWidgetController* AChaosDungeonHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& InWidgetControllerParams)
+{
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(InWidgetControllerParams);
+
+		// 绑定委托,监听 GameplayAttribute 属性值变化
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+
+		return AttributeMenuWidgetController;
+	}
+
+	return AttributeMenuWidgetController;
 }
 
 void AChaosDungeonHUD::InitOverlay(APlayerController* InPlayerController, APlayerState* InPlayerState,

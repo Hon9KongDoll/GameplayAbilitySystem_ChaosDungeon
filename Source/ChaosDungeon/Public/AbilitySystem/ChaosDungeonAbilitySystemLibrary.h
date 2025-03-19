@@ -5,6 +5,7 @@
 #include "ChaosDungeonAbilitySystemLibrary.generated.h"
 
 class UOverlayWidgetController;
+class UAttributeMenuWidgetController;
 
 UCLASS()
 class CHAOSDUNGEON_API UChaosDungeonAbilitySystemLibrary : public UBlueprintFunctionLibrary
@@ -14,4 +15,7 @@ class CHAOSDUNGEON_API UChaosDungeonAbilitySystemLibrary : public UBlueprintFunc
 public:
 	UFUNCTION(BlueprintPure, Category = "ChaosDungeonAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "ChaosDungeonAbilitySystemLibrary|WidgetController")
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 };
