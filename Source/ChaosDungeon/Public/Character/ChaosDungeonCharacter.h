@@ -24,7 +24,7 @@ public:
 
 private:
 	virtual void InitAbilityActorInfo() override;
-	
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> CameraBoom;

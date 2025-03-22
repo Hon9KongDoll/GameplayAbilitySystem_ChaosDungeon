@@ -6,7 +6,7 @@
 struct FChaosDungeonGameplayTags
 {
 public:
-	static const FChaosDungeonGameplayTags& Get() { return ChaosDungeonGameplayTags; }
+	static const FChaosDungeonGameplayTags& Get() { return GameplayTags; }
 
 	static void InitializeNativeGameplayTags();
 
@@ -27,5 +27,5 @@ public:
 	FGameplayTag InputTag_T;
 
 private:
-	static FChaosDungeonGameplayTags ChaosDungeonGameplayTags;
+	static FChaosDungeonGameplayTags GameplayTags;
 };

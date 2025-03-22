@@ -1,5 +1,6 @@
 #include "PlayerController/ChaosDungeonPlayerController.h"
 #include "Character/ChaosDungeonCharacter.h"
+#include "Input/ChaosDungeonInputComponent.h"
 
 // Engine
 #include "EnhancedInputSubsystems.h"
@@ -45,18 +46,18 @@ void AChaosDungeonPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
+	if (UChaosDungeonInputComponent* ChaosDungeonInputComponent = CastChecked<UChaosDungeonInputComponent>(InputComponent))
 	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-		EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ThisClass::Turn);
-		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ThisClass::Zoom);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
+		ChaosDungeonInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+		ChaosDungeonInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ThisClass::Turn);
+		ChaosDungeonInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ThisClass::Zoom);
+		ChaosDungeonInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
+		ChaosDungeonInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Started, this, &ThisClass::OnLeftMousePressed);
+		ChaosDungeonInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Completed, this, &ThisClass::OnLeftMouseReleased);
+		ChaosDungeonInputComponent->BindAction(MouseRightAction, ETriggerEvent::Started, this, &ThisClass::OnRightMousePressed);
+		ChaosDungeonInputComponent->BindAction(MouseRightAction, ETriggerEvent::Completed, this, &ThisClass::OnRightMouseReleased);
 
-		EnhancedInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Started, this, &ThisClass::OnLeftMousePressed);
-		EnhancedInputComponent->BindAction(MouseLeftAction, ETriggerEvent::Completed, this, &ThisClass::OnLeftMouseReleased);
-
-		EnhancedInputComponent->BindAction(MouseRightAction, ETriggerEvent::Started, this, &ThisClass::OnRightMousePressed);
-		EnhancedInputComponent->BindAction(MouseRightAction, ETriggerEvent::Completed, this, &ThisClass::OnRightMouseReleased);
+		ChaosDungeonInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 	}
 }
 
@@ -177,4 +178,16 @@ void AChaosDungeonPlayerController::CursorTrace()
 			}
 		}
 	}
+}
+
+void AChaosDungeonPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+}
+
+void AChaosDungeonPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+}
+
+void AChaosDungeonPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
 }

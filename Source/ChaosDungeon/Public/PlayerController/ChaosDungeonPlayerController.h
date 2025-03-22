@@ -2,11 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "ChaosDungeonPlayerController.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
 class IEnemyInterface;
+class UChaosDungeonInputConfig;
 struct FInputActionValue;
 
 UCLASS()
@@ -28,15 +30,16 @@ private:
 	void Turn(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Jump();
-
 	void OnLeftMousePressed();
 	void OnLeftMouseReleased();
-	
 	void OnRightMousePressed();
 	void OnRightMouseReleased();
-
 	void CursorTrace();
 	
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> ChaosDungeonInputMappingContext;
@@ -64,6 +67,7 @@ private:
 
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
-	//TObjectPtr<IEnemyInterface> LastActor;
-	//TObjectPtr<IEnemyInterface> ThisActor;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UChaosDungeonInputConfig> InputConfig;
 };
