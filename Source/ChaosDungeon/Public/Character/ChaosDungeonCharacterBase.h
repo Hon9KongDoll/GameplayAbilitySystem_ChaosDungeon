@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Interaction/CombatInterface.h"
 #include "ChaosDungeonCharacterBase.generated.h"
 
 class UStaticMeshComponent;
@@ -13,7 +14,7 @@ class UGameplayAbility;
 
 // Abstract宏 : 无法进行实例化，可能包含需要在子类中实现的纯虚函数
 UCLASS(Abstract)
-class CHAOSDUNGEON_API AChaosDungeonCharacterBase : public ACharacter, public IAbilitySystemInterface
+class CHAOSDUNGEON_API AChaosDungeonCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -29,13 +30,18 @@ protected:
 
 	void AddCharacterAbilities();
 
+	virtual FVector GetCombatSocketLocation();
+
 private:
 	virtual void InitAbilityActorInfo();
 
 protected:
 	// 右手武器
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<UStaticMeshComponent> RightHandedWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	FName RightHandedWeaponSocketName;
 
 	// 左手武器
 	UPROPERTY(EditAnywhere, Category = "Combat")

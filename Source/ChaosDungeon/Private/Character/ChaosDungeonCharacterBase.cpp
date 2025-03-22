@@ -42,6 +42,11 @@ void AChaosDungeonCharacterBase::AddCharacterAbilities()
 	}
 }
 
+FVector AChaosDungeonCharacterBase::GetCombatSocketLocation()
+{
+	return RightHandedWeapon->GetComponentLocation();
+}
+
 void AChaosDungeonCharacterBase::InitAbilityActorInfo()
 {
 }
