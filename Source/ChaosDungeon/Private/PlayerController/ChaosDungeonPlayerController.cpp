@@ -1,6 +1,7 @@
 #include "PlayerController/ChaosDungeonPlayerController.h"
 #include "Character/ChaosDungeonCharacter.h"
 #include "Input/ChaosDungeonInputComponent.h"
+#include "AbilitySystem/DoCAbilitySystemComponent.h"
 
 // Engine
 #include "EnhancedInputSubsystems.h"
@@ -8,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 AChaosDungeonPlayerController::AChaosDungeonPlayerController()
 {
@@ -22,6 +24,16 @@ void AChaosDungeonPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
+}
+
+UDoCAbilitySystemComponent* AChaosDungeonPlayerController::GetDoCAbilitySystemComponent()
+{
+	if (DoCAbilitySystemComponent == nullptr)
+	{
+		return CastChecked<UDoCAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn()));
+	}
+
+	return nullptr;
 }
 
 void AChaosDungeonPlayerController::BeginPlay()
@@ -182,12 +194,15 @@ void AChaosDungeonPlayerController::CursorTrace()
 
 void AChaosDungeonPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	
 }
 
 void AChaosDungeonPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	GetDoCAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 }
 
 void AChaosDungeonPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+	GetDoCAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 }

@@ -8,5 +8,9 @@ UCLASS()
 class CHAOSDUNGEON_API UChaosDungeonGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	FGameplayTag StartupTag;
 	
 };

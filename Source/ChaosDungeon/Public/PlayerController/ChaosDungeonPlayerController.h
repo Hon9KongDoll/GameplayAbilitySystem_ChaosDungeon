@@ -9,6 +9,7 @@ class UInputMappingContext;
 class UInputAction;
 class IEnemyInterface;
 class UChaosDungeonInputConfig;
+class UDoCAbilitySystemComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -21,6 +22,8 @@ public:
 
 	virtual void PlayerTick(float DeltaTime) override;
 	
+	UDoCAbilitySystemComponent* GetDoCAbilitySystemComponent();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -70,4 +73,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UChaosDungeonInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UDoCAbilitySystemComponent> DoCAbilitySystemComponent;
 };
