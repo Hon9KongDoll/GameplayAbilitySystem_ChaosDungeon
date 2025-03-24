@@ -60,21 +60,6 @@ public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	UFUNCTION()
-	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
-
-	UFUNCTION()
-	void OnRep_Stamina(const FGameplayAttributeData& OldStamina) const;
-
-	UFUNCTION()
-	void OnRep_Attack(const FGameplayAttributeData& OldAttack) const;
-
-	UFUNCTION()
-	void OnRep_PhysicalDEF(const FGameplayAttributeData& OldPhysicalDEF) const;
-
-	UFUNCTION()
-	void OnRep_LegalDEF(const FGameplayAttributeData& OldLegalDEF) const;
-
-	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
@@ -83,54 +68,63 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
+
+	UFUNCTION()
+	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
+
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
+
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
 	
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 
 public:
 
-	/*	Basic Attributes - 基础属性	*/
-	
-	// 智力
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "BasicAttributes")
-	FGameplayAttributeData Intelligence;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Intelligence);
-
-	// 耐力
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Stamina, Category = "BasicAttributes")
-	FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Stamina);
-
-	// 攻击
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Attack, Category = "BasicAttributes")
-	FGameplayAttributeData Attack;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Attack);
-
-	// 物防
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_PhysicalDEF, Category = "BasicAttributes")
-	FGameplayAttributeData PhysicalDEF;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, PhysicalDEF);
-
-	// 法防
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_LegalDEF, Category = "BasicAttributes")
-	FGameplayAttributeData LegalDEF;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, LegalDEF);
-
-	// 生命值，最大生命值
+	// 生命值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "VitalAttributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Health);
+	// 最大生命值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "VitalAttributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, MaxHealth);
-	
-	// 魔法值，最大魔法值
+
+	// 魔法值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "VitalAttributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Mana);
+	// 最大魔法值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "VitalAttributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, MaxMana);
+
+	/*	Primary Attributes - 主属性	*/
+	
+	// 力量
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "PrimaryAttributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Strength);
+
+	// 智力
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "PrimaryAttributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Intelligence);
+
+	// 恢复
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "PrimaryAttributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Resilience);
+
+	// 精力
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "PrimaryAttributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Vigor);
 
 	TMap<FGameplayTag, FAttributeSignature> TagToAttributes;
 };

@@ -20,13 +20,16 @@ AChaosDungeonCharacterBase::AChaosDungeonCharacterBase()
 	LeftHandedWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void AChaosDungeonCharacterBase::InitializeBasicAttributes() const
+void AChaosDungeonCharacterBase::InitializePrimaryAttributes() const
 {
 	check(AbilitySystemComponent);
-	check(DefaultBasicAttributes);
 
-	FGameplayEffectContextHandle GameplayEffectContextHandle = AbilitySystemComponent->MakeEffectContext();
-	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultBasicAttributes, 1.0, GameplayEffectContextHandle);
+	check(DefaultPrimaryAttributes);
+
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+
+	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultPrimaryAttributes, 1.0, ContextHandle);
+
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*GameplayEffectSpecHandle.Data.Get(), AbilitySystemComponent);
 }
 

@@ -10,10 +10,6 @@
 UChaosDungeonAttributeSet::UChaosDungeonAttributeSet()
 {
 	const FChaosDungeonGameplayTags& GameplayTags = FChaosDungeonGameplayTags::Get();
-
-	FAttributeSignature IntelligenceDelegate;
-	IntelligenceDelegate.BindStatic(GetIntelligenceAttribute);
-	TagToAttributes.Add(GameplayTags.Attributes_BasicAttributes_Intelligence, IntelligenceDelegate);
 }
 
 void UChaosDungeonAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -22,15 +18,13 @@ void UChaosDungeonAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetim
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
-
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Attack, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, PhysicalDEF, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, LegalDEF, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 }
 
 void UChaosDungeonAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -66,31 +60,6 @@ void UChaosDungeonAttributeSet::PostGameplayEffectExecute(const FGameplayEffectM
 	}
 }
 
-void UChaosDungeonAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Intelligence, OldIntelligence);
-}
-
-void UChaosDungeonAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Stamina, OldStamina);
-}
-
-void UChaosDungeonAttributeSet::OnRep_Attack(const FGameplayAttributeData& OldAttack) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Attack, OldAttack);
-}
-
-void UChaosDungeonAttributeSet::OnRep_PhysicalDEF(const FGameplayAttributeData& OldPhysicalDEF) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, PhysicalDEF, OldPhysicalDEF);
-}
-
-void UChaosDungeonAttributeSet::OnRep_LegalDEF(const FGameplayAttributeData& OldLegalDEF) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, LegalDEF, OldLegalDEF);
-}
-
 void UChaosDungeonAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Health, OldHealth);
@@ -109,6 +78,26 @@ void UChaosDungeonAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana
 void UChaosDungeonAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Strength, OldStrength);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Resilience, OldResilience);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Vigor, OldVigor);
 }
 
 void UChaosDungeonAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
