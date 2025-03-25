@@ -61,11 +61,13 @@ public:
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
+
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
 
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
+
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
 
@@ -80,16 +82,65 @@ public:
 
 	UFUNCTION()
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
+
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+
+	UFUNCTION()
+	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
+
+	UFUNCTION()
+	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const;
+
+	UFUNCTION()
+	void OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const;
+
+	UFUNCTION()
+	void OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const;
+
+	UFUNCTION()
+	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const;
 	
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 
 public:
 
+	/*	Primary Attributes - 主属性	*/
+	
+	// 力量 - IncreasesPhysicalDamage 增加物理伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "PrimaryAttributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Strength);
+
+	// 智力 - IncreasesMagicalDamage 增加魔法伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "PrimaryAttributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Intelligence);
+
+	// 韧性 - IncreasesArmorAndArmorPenetration 增加护甲和护甲穿透
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "PrimaryAttributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Resilience);
+
+	// 精力 - InCreasesHealth 增加生命
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "PrimaryAttributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Vigor);
+
+	/*	Vital Attributes - 重要属性+	*/
+
 	// 生命值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "VitalAttributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Health);
+
 	// 最大生命值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "VitalAttributes")
 	FGameplayAttributeData MaxHealth;
@@ -99,32 +150,51 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "VitalAttributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Mana);
+
 	// 最大魔法值
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "VitalAttributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, MaxMana);
 
-	/*	Primary Attributes - 主属性	*/
-	
-	// 力量
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "PrimaryAttributes")
-	FGameplayAttributeData Strength;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Strength);
+	// 护甲
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "VitalAttributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Armor);
 
-	// 智力
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "PrimaryAttributes")
-	FGameplayAttributeData Intelligence;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Intelligence);
+	// 穿甲
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmorPenetration, Category = "VitalAttributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, ArmorPenetration);
 
-	// 恢复
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "PrimaryAttributes")
-	FGameplayAttributeData Resilience;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Resilience);
+	// 格挡几率
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_BlockChance, Category = "VitalAttributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, BlockChance);
 
-	// 精力
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "PrimaryAttributes")
-	FGameplayAttributeData Vigor;
-	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Vigor);
+	// 暴击几率
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitChance, Category = "VitalAttributes")
+	FGameplayAttributeData CriticalHitChance;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, CriticalHitChance);
+
+	// 暴击伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitDamage, Category = "VitalAttributes")
+	FGameplayAttributeData CriticalHitDamage;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, CriticalHitDamage);
+
+	// 暴击抗性
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitResistance, Category = "VitalAttributes")
+	FGameplayAttributeData CriticalHitResistance;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, CriticalHitResistance);
+
+	// 生命回复
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_HealthRegeneration, Category = "VitalAttributes")
+	FGameplayAttributeData HealthRegeneration;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, HealthRegeneration);
+
+	// 法力回复
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ManaRegeneration, Category = "VitalAttributes")
+	FGameplayAttributeData ManaRegeneration;
+	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, ManaRegeneration);
 
 	TMap<FGameplayTag, FAttributeSignature> TagToAttributes;
 };

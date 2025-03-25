@@ -91,5 +91,5 @@ void AChaosDungeonCharacter::InitAbilityActorInfo()
 	}
 
 	// 初始化主属性
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }

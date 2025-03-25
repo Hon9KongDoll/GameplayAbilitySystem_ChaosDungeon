@@ -9,6 +9,9 @@
 
 UChaosDungeonAttributeSet::UChaosDungeonAttributeSet()
 {
+	InitMaxHealth(100.f);
+	InitMaxMana(100.f);
+
 	const FChaosDungeonGameplayTags& GameplayTags = FChaosDungeonGameplayTags::Get();
 }
 
@@ -25,6 +28,16 @@ void UChaosDungeonAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetim
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UChaosDungeonAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
+
 }
 
 void UChaosDungeonAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -98,6 +111,46 @@ void UChaosDungeonAttributeSet::OnRep_Resilience(const FGameplayAttributeData& O
 void UChaosDungeonAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Vigor, OldVigor);
+}
+
+void UChaosDungeonAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, Armor, OldArmor);
+}
+
+void UChaosDungeonAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, ArmorPenetration, OldArmorPenetration);
+}
+
+void UChaosDungeonAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, BlockChance, OldBlockChance);
+}
+
+void UChaosDungeonAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+
+void UChaosDungeonAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+
+void UChaosDungeonAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
+}
+
+void UChaosDungeonAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, HealthRegeneration, OldHealthRegeneration);
+}
+
+void UChaosDungeonAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UChaosDungeonAttributeSet, ManaRegeneration, OldManaRegeneration);
 }
 
 void UChaosDungeonAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const

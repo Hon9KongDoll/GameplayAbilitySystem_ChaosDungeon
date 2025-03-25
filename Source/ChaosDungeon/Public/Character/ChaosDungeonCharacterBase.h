@@ -26,8 +26,11 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
 protected:
-	// 初始化主属性
-	void InitializePrimaryAttributes() const;
+	// 初始化默认属性
+	void InitializeDefaultAttributes() const;
+
+	// 应用游戏效果到自身
+	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffect, float Level = 1.f) const;
 
 	void AddCharacterAbilities();
 
@@ -54,9 +57,13 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	// 用于初始化主属性
+	// 用于初始化主属性GE
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	// 用于初始化重要属性GE
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 
 	// 游戏开始赋予的能力
 	UPROPERTY(EditAnywhere, Category = "Abilities")
