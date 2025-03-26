@@ -9,9 +9,6 @@
 
 UChaosDungeonAttributeSet::UChaosDungeonAttributeSet()
 {
-	InitMaxHealth(100.f);
-	InitMaxMana(100.f);
-
 	const FChaosDungeonGameplayTags& GameplayTags = FChaosDungeonGameplayTags::Get();
 }
 

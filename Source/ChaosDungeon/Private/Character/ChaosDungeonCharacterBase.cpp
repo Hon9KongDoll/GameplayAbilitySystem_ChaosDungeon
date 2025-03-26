@@ -22,9 +22,11 @@ AChaosDungeonCharacterBase::AChaosDungeonCharacterBase()
 
 void AChaosDungeonCharacterBase::InitializeDefaultAttributes() const
 {
-	// 应用游戏效果到自身 ： 初始化属性
+	// 应用游戏效果到自身 ：初始化属性
 	ApplyGameplayEffectToSelf(DefaultPrimaryAttributes, 1.f);
+	ApplyGameplayEffectToSelf(DefaultSecondaryAttributes, 1.f);
 	ApplyGameplayEffectToSelf(DefaultVitalAttributes, 1.f);
+	
 }
 
 void AChaosDungeonCharacterBase::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffect, float Level) const
@@ -35,6 +37,7 @@ void AChaosDungeonCharacterBase::ApplyGameplayEffectToSelf(TSubclassOf<UGameplay
 
 	// 创建 FGameplayEffectContextHandle，用于存储来源、目标、命中信息、投射物状态等数据
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
 
 	FGameplayEffectSpecHandle GameplayEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, Level, ContextHandle);
 
