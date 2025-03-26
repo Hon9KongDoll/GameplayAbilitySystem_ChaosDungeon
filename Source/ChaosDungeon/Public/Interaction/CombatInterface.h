@@ -15,7 +15,7 @@ class CHAOSDUNGEON_API ICombatInterface
 	GENERATED_BODY()
 
 public:
-	virtual int32 GetPlayerLevel();
+	virtual int32 GetPlayerLevel() const;
 	
 	virtual FVector GetCombatSocketLocation();
 };

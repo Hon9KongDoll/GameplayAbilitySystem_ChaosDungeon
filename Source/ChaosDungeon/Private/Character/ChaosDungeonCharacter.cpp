@@ -66,6 +66,15 @@ void AChaosDungeonCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AChaosDungeonCharacter::GetPlayerLevel() const
+{
+	AChaosDungeonPlayerState* ChaosDungeonPlayerState = Cast<AChaosDungeonPlayerState>(GetPlayerState());
+
+	check(ChaosDungeonPlayerState);
+
+	return ChaosDungeonPlayerState->GetPlayerLevel();
+}
+
 void AChaosDungeonCharacter::InitAbilityActorInfo()
 {
 	// 获取玩家状态

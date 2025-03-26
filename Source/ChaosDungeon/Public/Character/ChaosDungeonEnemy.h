@@ -16,8 +16,13 @@ public:
 	virtual void HightLightActor() override;
 	virtual void UnHightLightActor() override;
 
+	FORCEINLINE virtual int32 GetPlayerLevel() const { return EnemyLevel; }
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+private:
+	uint32 EnemyLevel = 1;
 };

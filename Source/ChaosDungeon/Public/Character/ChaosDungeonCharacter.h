@@ -22,6 +22,8 @@ public:
 	
 	USpringArmComponent* GetCameraBoom() { return CameraBoom; }
 
+	virtual int32 GetPlayerLevel() const override;
+
 private:
 	virtual void InitAbilityActorInfo() override;
 

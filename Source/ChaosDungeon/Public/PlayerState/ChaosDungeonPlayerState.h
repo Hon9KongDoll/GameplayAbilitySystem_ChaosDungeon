@@ -16,9 +16,17 @@ class CHAOSDUNGEON_API AChaosDungeonPlayerState : public APlayerState, public IA
 public:
 	AChaosDungeonPlayerState();
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
+
+	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	FORCEINLINE virtual int32 GetPlayerLevel() const { return PlayerLevel; }
+
+private:
+	UFUNCTION()
+	void Rep_PlayerLevel(int32 OldPlayerLevel);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -26,4 +34,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+private:
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = Rep_PlayerLevel)
+	int32 PlayerLevel = 1;
 };
