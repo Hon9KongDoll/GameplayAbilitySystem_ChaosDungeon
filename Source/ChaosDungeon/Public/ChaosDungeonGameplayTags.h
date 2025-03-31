@@ -11,15 +11,19 @@ public:
 	static void InitializeNativeGameplayTags();
 
 public:
-	FGameplayTag Attributes_BasicAttributes_Intelligence;
-	FGameplayTag Attributes_BasicAttributes_Stamina;
-	FGameplayTag Attributes_BasicAttributes_Attack;
-	FGameplayTag Attributes_BasicAttributes_PhysicalDEF;
-	FGameplayTag Attributes_BasicAttributes_LegalDEF;
-	FGameplayTag Attributes_BasicAttributes_Health;
-	FGameplayTag Attributes_BasicAttributes_MaxHealth;
-	FGameplayTag Attributes_BasicAttributes_Mana;
-	FGameplayTag Attributes_BasicAttributes_MaxMana;
+	FGameplayTag Attributes_Primary_Strength;
+	FGameplayTag Attributes_Primary_Intelligence;
+	FGameplayTag Attributes_Primary_Resilience;
+	FGameplayTag Attributes_Primary_Vigor;
+
+	FGameplayTag Attributes_Secondary_Armor;
+	FGameplayTag Attributes_Secondary_ArmorPenetration;
+	FGameplayTag Attributes_Secondary_BlockChance;
+	FGameplayTag Attributes_Secondary_CriticalHitChance;
+	FGameplayTag Attributes_Secondary_CriticalHitDamage;
+	FGameplayTag Attributes_Secondary_CriticalHitResistance;
+	FGameplayTag Attributes_Secondary_HealthRegeneration;
+	FGameplayTag Attributes_Secondary_ManaRegeneration;
 
 	FGameplayTag InputTag_Q;
 	FGameplayTag InputTag_E;

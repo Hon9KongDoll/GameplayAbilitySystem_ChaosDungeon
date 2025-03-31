@@ -11,8 +11,6 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-DECLARE_DELEGATE_RetVal(FGameplayAttribute, FAttributeSignature);
-
 USTRUCT()
 struct FEffectProperties
 {
@@ -198,5 +196,7 @@ public:
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Health);
 
-	TMap<FGameplayTag, FAttributeSignature> TagToAttributes;
+	TMap<FGameplayTag, FGameplayAttribute(*)()> TagToAttributes;
+
+	TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FuntionPointer;
 };

@@ -11,11 +11,14 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	UChaosDungeonAttributeSet* AS = CastChecked<UChaosDungeonAttributeSet>(AttributeSet);
 
-	FChaosDungeonAttributeInfo Info = AttributeInfo->FindAttributeInfoByTag(FChaosDungeonGameplayTags::Get().Attributes_BasicAttributes_Intelligence);
+	for (auto& Pair : AS->TagToAttributes)
+	{
+		FChaosDungeonAttributeInfo Info = AttributeInfo->FindAttributeInfoByTag(Pair.Key);
 
-	Info.AttributeValue = AS->GetIntelligence();
+		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
 
-	AttributeInfoDelegate.Broadcast(Info);
+		AttributeInfoDelegate.Broadcast(Info);
+	}
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
