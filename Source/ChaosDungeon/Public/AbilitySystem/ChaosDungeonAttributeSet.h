@@ -11,6 +11,10 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+// typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFunPtr;
+template<class T>
+using TStaticFunPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -196,7 +200,5 @@ public:
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UChaosDungeonAttributeSet, Health);
 
-	TMap<FGameplayTag, FGameplayAttribute(*)()> TagToAttributes;
-
-	TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FuntionPointer;
+	TMap<FGameplayTag, TStaticFunPtr<FGameplayAttribute()>> TagToAttributes;
 };

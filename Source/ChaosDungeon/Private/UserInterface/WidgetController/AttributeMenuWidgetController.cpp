@@ -13,15 +13,32 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	for (auto& Pair : AS->TagToAttributes)
 	{
-		FChaosDungeonAttributeInfo Info = AttributeInfo->FindAttributeInfoByTag(Pair.Key);
-
-		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-
-		AttributeInfoDelegate.Broadcast(Info);
+		BroadcastAttributesInfo(Pair.Key, Pair.Value());
 	}
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
 	Super::BindCallbacksToDependencies();
+
+	check(AttributeInfo);
+
+	UChaosDungeonAttributeSet* AS = CastChecked<UChaosDungeonAttributeSet>(AttributeSet);
+
+	for (auto& Pair : AS->TagToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+			[this, Pair](const FOnAttributeChangeData& Data)
+			{
+				BroadcastAttributesInfo(Pair.Key, Pair.Value());
+			}
+		);
+	}
+}
+
+void UAttributeMenuWidgetController::BroadcastAttributesInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
+{
+	FChaosDungeonAttributeInfo Info = AttributeInfo->FindAttributeInfoByTag(AttributeTag);
+	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
+	AttributeInfoDelegate.Broadcast(Info);
 }
